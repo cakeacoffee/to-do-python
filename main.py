@@ -1,5 +1,10 @@
+from utils.interface_cli import *
+
+# flake8 . --exclude=venv
+
+
 def main():
-    print("Hello")
+    cli()
 
 
 if __name__ == "__main__":
