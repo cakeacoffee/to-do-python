@@ -12,6 +12,37 @@
 A simple to do list application created with python. 
 This project involves building a terminal-based to-do list application using Python. The application will allow users to manage simple to-do lists, including creating lists, adding tasks to lists, marking tasks as complete, and viewing all tasks. The data will be stored in a SQLite database for persistence. The project focuses on foundational skills in Python programming, database interaction, and creating efficient command-line tools.
 
+## Set Up
+**1. Clone the Repository**
+```
+git clone <repository-url>
+cd to_do_list
+```
+**2.  Environment Set up**
+
+- Create Venv
+```
+python -m venv venv
+```
+- Activate environment
+
+Mac/Linux
+```
+source venv/bin/activate
+```
+Windows
+```
+venv\Scripts\activate
+```
+
+**3. Install Dependencies**
+
+```
+pip install -r requirements.txt
+```
+
+
+
 ## Purpose and Motivation
 The primary goal of this project is to strengthen my practical Python programming skills and gain experience in database integration. By working with SQLite, the project introduces the basics of database design and CRUD (Create, Read, Update, Delete) operations. Building a terminal-controlled application also reinforces structured programming, input handling, and user feedback, forming a foundation for transitioning to more advanced user interfaces in the future.
 

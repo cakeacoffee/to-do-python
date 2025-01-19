@@ -1,0 +1,22 @@
+## Exclude venv folder
+venv/
+
+## Exclude compiled Python files and caches
+__pycache__/
+*.py[cod]
+
+## Exclude Database files
+*.sqlite
+*.db
+
+# Exclude vscode config
+.vscode/
+
+# OS specific
+# macOS
+.DS_Store
+# Windows
+Thumbs.db
+
+# Exclude log files
+*.log

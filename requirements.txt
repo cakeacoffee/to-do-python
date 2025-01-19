@@ -1,0 +1,47 @@
+# Code Formatter
+black==24.10.0  # Automatically formats Python code to a consistent style
+
+# Command-line Interface (CLI) Library
+click==8.1.8  # Simplifies building command-line interfaces in Python
+
+# Linter
+flake8==7.1.1  # An extension of pyflakes, it checks Python code for style issues and errors
+
+# Dependencies for Linter Plugins
+greenlet==3.1.1  # Low-level concurrency library (required by some tools)
+
+# Configuration for Flake8
+iniconfig==2.0.0  # Used to handle configuration settings for Python packages
+
+# Cyclomatic Complexity Plugin for Flake8
+mccabe==0.7.0  # Detects complex code, helping maintain readability
+
+# Type Checking Support (used by mypy)
+mypy-extensions==1.0.0  # Provides mypy extensions for type checking
+
+# Packaging Utilities
+packaging==24.2  # Provides utilities for working with package versioning and distribution
+
+# Path Specification for Git Ignoring
+pathspec==0.12.1  # Used by gitignore-style libraries to specify which paths to ignore
+
+# Platform-Specific Directories
+platformdirs==4.3.6  # Determines directory paths that are platform-specific
+
+# Plugin System for Flake8
+pluggy==1.5.0  # The plugin system for Flake8 to extend functionality
+
+# Style Checker (part of Flake8)
+pycodestyle==2.12.1  # Checks Python code against PEP 8 style guidelines
+
+# Linter: Checks for undefined names, unused imports, etc.
+pyflakes==3.2.0  # Linting tool for finding errors in Python code
+
+# Testing Framework
+pytest==8.3.4  # Framework for running tests and checking code correctness
+
+# SQL Database Toolkit
+SQLAlchemy==2.0.37  # ORM (Object Relational Mapper) for interacting with SQL databases in Python
+
+# Type Annotations Extension
+typing_extensions==4.12.2  # Backports new features to the typing module for older Python versions
