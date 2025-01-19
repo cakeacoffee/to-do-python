@@ -1,4 +1,13 @@
 # to-do-python
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+![SQLite](https://img.shields.io/badge/sqlite-003B57?style=for-the-badge&logo=sqlite&logoColor=white)
+![CLI](https://img.shields.io/badge/CLI%20Tool-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+![Pytest](https://img.shields.io/badge/Pytest-0A9EDC?style=for-the-badge&logo=pytest&logoColor=white)
+![Testing](https://img.shields.io/badge/Testing-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
+![Black](https://img.shields.io/badge/Code%20Formatter-Black-000000?style=for-the-badge&logo=python&logoColor=white)
+
+
 ## Project Overview
 A simple to do list application created with python. 
 This project involves building a terminal-based to-do list application using Python. The application will allow users to manage simple to-do lists, including creating lists, adding tasks to lists, marking tasks as complete, and viewing all tasks. The data will be stored in a SQLite database for persistence. The project focuses on foundational skills in Python programming, database interaction, and creating efficient command-line tools.
