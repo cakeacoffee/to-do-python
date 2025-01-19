@@ -70,8 +70,8 @@ The primary goal of this project is to strengthen my practical Python programmin
 - Store all data persistently using SQLite.
 
 ## TASKS
-- [ ] Decide on tech stack,
-- [ ] Setup project and environment
+- [X] Decide on tech stack,
+- [X] Setup project and environment
 - [ ] Design database and how everything links together t
 - [ ] Implement
   * user interaction
