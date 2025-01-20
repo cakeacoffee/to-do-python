@@ -28,14 +28,12 @@ class ToDoList:
         # convert string to list item
         return ListItem(item)
 
-    #! Lernt something
     def to_dict(self):
         return {
             "name": self.name,
             "items": [{"item": item.name, "done": item.done} for item in self.items],
         }
 
-    #! indent?
     def create_json(self):
         return json.dumps(self.to_dict(), indent=4)
 
