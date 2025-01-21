@@ -4,8 +4,8 @@ from utils.file_manager import save_to_json_file
 
 
 class ToDoList:
-    """ToDoList class
-    """
+    """ToDoList class"""
+
     name = ""
     items = list()
 
