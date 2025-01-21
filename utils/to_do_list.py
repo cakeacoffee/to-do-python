@@ -37,10 +37,7 @@ class ToDoList:
         Returns:
             `list[ListItem]: a list of ListItem objects`
         """
-        new_item_list = list()
-        for i in item_list:
-            new_item_list.append(self._convert_item(i))
-        return new_item_list
+        return [self._convert_item(item) for item in item_list]
 
     def _convert_item(self, item: str) -> ListItem:
         """### Convert item
