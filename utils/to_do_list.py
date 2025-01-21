@@ -13,7 +13,7 @@ class ToDoList:
 
         self.save_to_file()
 
-    #TODO: new_items is a list of strings, convert with _convert_item_list
+    # TODO: new_items is a list of strings, convert with _convert_item_list
     def add_item_to_list(self, new_items: list[str]):
         self.items.extend(new_items)
         return self
@@ -24,7 +24,7 @@ class ToDoList:
             new_item_list.append(self._convert_item(i))
         return new_item_list
 
-    def _convert_item(self, item: str) ->ListItem:
+    def _convert_item(self, item: str) -> ListItem:
         return ListItem(item)
 
     def to_dict(self) -> dict:
