@@ -1,7 +1,7 @@
 import sqlite3
 
 
-def setup_db(db_name: str):
+def initialize_database(db_name: str):
     # Connect and create cursor
     connection = sqlite3.connect(f"database/{db_name}.db")
     cursor = connection.cursor()
