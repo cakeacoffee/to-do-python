@@ -87,47 +87,6 @@ def add_item(item_name: str, list_name: str, db_name: str = "todopydb"):
             print("debug: Transaction failed:", e)
 
 
-def connect():
-    connection = sqlite3.connect("database/todopy.db")
-    cursor = connection.cursor()
-    cursor.execute("CREATE TABLE IF NOT EXISTS todolist (id INTEGER, name TEXT)")
-    cursor.execute("INSERT INTO todolist VALUES (1, 'alice')")
-    cursor.execute("INSERT INTO todolist VALUES (2, 'bob')")
-    cursor.execute("INSERT INTO todolist VALUES (3, 'eve')")
-    connection.commit()
-    print(connection.total_changes)  # debug
-    return cursor
-
-
-def create_tables():
-    connection = sqlite3.connect("database/todopy.db")
-    cursor = connection.cursor()
-
-    cursor.execute("CREATE TABLE IF NOT EXISTS todolist (id INTEGER, name TEXT)")
-    cursor.execute(
-        "CREATE TABLE IF NOT EXISTS item (id INTEGER, name TEXT, done INTEGER, todolistid INTEGER, FOREIGN KEY(todolistid) REFERENCES todolist(id))"
-    )
-    connection.commit()
-    print(connection.total_changes)  # debug
-
-    cursor.execute("INSERT INTO todolist VALUES (1, 'alice')")
-    cursor.execute("INSERT INTO todolist VALUES (2, 'bob')")
-    cursor.execute("INSERT INTO todolist VALUES (3, 'eve')")
-    connection.commit()
-    print(connection.total_changes)  # debug
-
-    cursor.execute("INSERT INTO item VALUES (1, 'apple', 0, 1)")
-    cursor.execute("INSERT INTO item VALUES (2, 'pineapple', 0, 1)")
-    cursor.execute("INSERT INTO item VALUES (3, 'pen', 0, 2)")
-    cursor.execute("INSERT INTO item VALUES (4, 'ugh', 0, 1)")
-    connection.commit()
-    print(connection.total_changes)  # debug
-
-    return cursor
-
-
-def add_data(cursor):
-    pass
 
 
 def show_db(db_name: str = "todopydb"):
