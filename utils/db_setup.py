@@ -1,9 +1,18 @@
 import sqlite3
 
 
-def initialize_database(db_name: str = "todopydb"):
-    # Connect and create cursor
-    message = ""  # for reporting to user
+def initialize_database(db_name: str = "todopydb") -> str:
+    """### Initialise the database
+
+    * Create `todolist` table and `item` table
+
+    Args:
+        `db_name (str, optional): the database. defaults to "todopydb"`
+
+    Returns:
+        `str: message, for cli output`
+    """
+    message = ""
 
     with sqlite3.connect(f"database/{db_name}.db") as connection:
         cursor = connection.cursor()
@@ -44,6 +53,8 @@ def initialize_database(db_name: str = "todopydb"):
         finally:
             print(message)
 
+    return message
+
 
 def validate_str(string: str) -> bool:
     """### Validate a String
@@ -66,7 +77,16 @@ def validate_str(string: str) -> bool:
     return True
 
 
-def add_list(list_name: str, db_name: str = "todopydb"):
+def add_list(list_name: str, db_name: str = "todopydb") -> str:
+    """### Add a new list
+
+    Args:
+        `list_name (str): the list name`
+        `db_name (str, optional): the database. defaults to "todopydb"`
+
+    Returns:
+        `str: message, for cli output`
+    """
     message = ""
     try:
         validate_str(list_name)
@@ -96,12 +116,26 @@ def add_list(list_name: str, db_name: str = "todopydb"):
         message = f"Unexpected error: {e}"
     finally:
         print(message)
+        return message
 
 
-def add_item(item_name: str, list_name: str, db_name: str = "todopydb"):
+def add_item(item_name: str, list_name: str, db_name: str = "todopydb") -> str:
+    """### Add new Item
+
+    Args:
+        `item_name (str): the item name`
+        `list_name (str): _list to add to`
+        `db_name (str, optional): the database. Defaults to "todopydb".`
+
+    Raises:
+        `ValueError: not found list name error`
+
+    Returns:
+        `str: message, for cli output`
+    """
     message = ""
     try:
-        validate_str(list_name)
+        validate_str(item_name)
 
         with sqlite3.connect(f"database/{db_name}.db") as connection:
             cursor = connection.cursor()
@@ -138,9 +172,11 @@ def add_item(item_name: str, list_name: str, db_name: str = "todopydb"):
         message = f"Unexpected error: {e}"
     finally:
         print(message)
+        return message
 
 
 def show_db(db_name: str = "todopydb"):
+    #!debug
     with sqlite3.connect(f"database/{db_name}.db") as connection:
         cursor = connection.cursor()
 
@@ -160,7 +196,7 @@ def show_db(db_name: str = "todopydb"):
 if __name__ == "__main__":
     db_name = "freshdb"
     initialize_database(db_name)
-    add_list(" ", db_name)
+    add_list("steven", db_name)
     add_list("bob", db_name)
     add_list("eve", db_name)
     add_item("apple", "alice", db_name)
