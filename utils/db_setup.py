@@ -45,48 +45,67 @@ def initialize_database(db_name: str = "todopydb"):
             print(message)
 
 
+def validate_str(string: str) -> bool:
+    """### Validate a String
+    * check if string is empty and is a string
+
+    Args:
+        `string (str): the string to be validated`
+
+    Raises:
+        `ValueError: non empty string error`
+        `ValueError: empty and white space error`
+
+    Returns:
+        `bool: true if passes checks`
+    """
+    if not isinstance(string, str):
+        raise ValueError("Name must be a non-empty string")
+    if len(string.strip()) == 0:
+        raise ValueError("Name cannot be empty or just whitespace.")
+    return True
+
+
 def add_list(list_name: str, db_name: str = "todopydb"):
     message = ""
-    # Validate Input
-    if not isinstance(list_name, str):
-        raise ValueError ("Name must be a non-empty string")
-    if len(list_name.strip()) == 0:
-        raise ValueError("Name cannot be empty or just whitespace.")
-    
-    # Add
-    with sqlite3.connect(f"database/{db_name}.db") as connection:
-        cursor = connection.cursor()
+    try:
+        validate_str(list_name)
 
-        try:
+        with sqlite3.connect(f"database/{db_name}.db") as connection:
+            cursor = connection.cursor()
             connection.execute("BEGIN")
             cursor.execute(
                 f"INSERT INTO todolist (name) VALUES (?)", (list_name,)
             )  # needs to be a tuple , hence trailing , to specify
             connection.commit()
 
-            message = f"List '{list_name}' added successfully with ID {cursor.lastrowid}."
-        except sqlite3.IntegrityError:
-            connection.rollback()
-            message = f"Error: The list name '{list_name}' already exists."
-        #except ValueError as ve:
-        #    connection.rollback()
-        #    message = f"Validation error: {ve}"
-        except sqlite3.Error as e:
-            connection.rollback()
-            message = f"Database error: {e}"
-        except Exception as e:
-            connection.rollback()
-            message = f"Unexpected error: {e}"
-        finally:
-            print(message)
+            message = (
+                f"List '{list_name}' added successfully with ID {cursor.lastrowid}."
+            )
+
+    except ValueError as ve:
+        message = f"Validation error: {ve}"
+    except sqlite3.IntegrityError:
+        connection.rollback()
+        message = f"Error: The list name '{list_name}' already exists."
+    except sqlite3.Error as e:
+        connection.rollback()
+        message = f"Database error: {e}"
+    except Exception as e:
+        connection.rollback()
+        message = f"Unexpected error: {e}"
+    finally:
+        print(message)
 
 
 def add_item(item_name: str, list_name: str, db_name: str = "todopydb"):
     message = ""
-    with sqlite3.connect(f"database/{db_name}.db") as connection:
-        cursor = connection.cursor()
+    try:
+        validate_str(list_name)
 
-        try:
+        with sqlite3.connect(f"database/{db_name}.db") as connection:
+            cursor = connection.cursor()
+
             connection.execute("BEGIN")
 
             # Get the id of the to-do list by name
@@ -106,20 +125,19 @@ def add_item(item_name: str, list_name: str, db_name: str = "todopydb"):
             connection.commit()
 
             message = f"Item '{item_name}' added to the to-do list '{list_name}'."
-        except sqlite3.IntegrityError:
-            connection.rollback()
-            message = f"Error: The list name '{list_name}' already exists."
-        #except ValueError as ve:
-        #    connection.rollback()
-        #    message = f"Validation error: {ve}"
-        except sqlite3.Error as e:
-            connection.rollback()
-            message = f"Database error: {e}"
-        except Exception as e:
-            connection.rollback()
-            message = f"Unexpected error: {e}"
-        finally:
-            print(message)
+    except ValueError as ve:
+        message = f"Validation error: {ve}"
+    except sqlite3.IntegrityError:
+        connection.rollback()
+        message = f"Error: The list name '{list_name}' already exists."
+    except sqlite3.Error as e:
+        connection.rollback()
+        message = f"Database error: {e}"
+    except Exception as e:
+        connection.rollback()
+        message = f"Unexpected error: {e}"
+    finally:
+        print(message)
 
 
 def show_db(db_name: str = "todopydb"):
@@ -142,7 +160,7 @@ def show_db(db_name: str = "todopydb"):
 if __name__ == "__main__":
     db_name = "freshdb"
     initialize_database(db_name)
-    add_list("test", db_name)
+    add_list(" ", db_name)
     add_list("bob", db_name)
     add_list("eve", db_name)
     add_item("apple", "alice", db_name)
