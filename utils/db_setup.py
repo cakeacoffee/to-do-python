@@ -62,7 +62,7 @@ def add_list(db_name: str, list_name: str):
             connection.close()
 
 
-def add_(db_name: str, item_name: str, list_name: str):
+def add_item(db_name: str, item_name: str, list_name: str):
     with sqlite3.connect(f"database/{db_name}.db") as connection:
         cursor = connection.cursor()
 
