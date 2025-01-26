@@ -26,7 +26,7 @@ def initialize_database(db_name: str):
                 CREATE TABLE IF NOT EXISTS item (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     name TEXT,
-                    done BOOLEAN,  -- Will be stored as INTEGER (0 or 1)
+                    done BOOLEAN DEFAULT 0,
                     todolistid INTEGER,
                     FOREIGN KEY(todolistid) REFERENCES todolist(id))
             """
@@ -55,6 +55,37 @@ def add_list(db_name: str, list_name: str):
             connection.commit()
 
             print(f"List '{list_name}' added successfully with ID {cursor.lastrowid}.")
+        except Exception as e:
+            connection.rollback()
+            print("debug: Transaction failed:", e)
+        finally:
+            connection.close()
+
+
+def add_(db_name: str, item_name: str, list_name: str):
+    with sqlite3.connect(f"database/{db_name}.db") as connection:
+        cursor = connection.cursor()
+
+        try:
+            connection.execute("BEGIN")
+
+            # Get the id of the to-do list by name
+            cursor.execute("SELECT id FROM todolist WHERE name = ?", (list_name,))
+            result = cursor.fetchone()
+            if not result:
+                raise ValueError(f"list:'{list_name}' not found.")
+            todolist_id = result[0]
+
+            # insert
+            cursor.execute(
+                "INSERT INTO item (name, todolistid) VALUES (?, ?)",
+                (item_name, todolist_id),
+            )
+
+            # add link to todolist table
+            connection.commit()
+
+            print(f"Item '{item_name}' added to the to-do list '{list_name}'.")
         except Exception as e:
             connection.rollback()
             print("debug: Transaction failed:", e)
