@@ -16,7 +16,7 @@ def initialize_database(db_name: str = "todopydb"):
                 """
                 CREATE TABLE IF NOT EXISTS todolist (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    name TEXT
+                    name TEXT UNIQUE
                     )
             """
             )
