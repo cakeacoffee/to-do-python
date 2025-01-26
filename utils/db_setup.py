@@ -47,6 +47,13 @@ def initialize_database(db_name: str = "todopydb"):
 
 def add_list(list_name: str, db_name: str = "todopydb"):
     message = ""
+    # Validate Input
+    if not isinstance(list_name, str):
+        raise ValueError ("Name must be a non-empty string")
+    if len(list_name.strip()) == 0:
+        raise ValueError("Name cannot be empty or just whitespace.")
+    
+    # Add
     with sqlite3.connect(f"database/{db_name}.db") as connection:
         cursor = connection.cursor()
 
@@ -57,12 +64,13 @@ def add_list(list_name: str, db_name: str = "todopydb"):
             )  # needs to be a tuple , hence trailing , to specify
             connection.commit()
 
-            message = (
-                f"List '{list_name}' added successfully with ID {cursor.lastrowid}."
-            )
+            message = f"List '{list_name}' added successfully with ID {cursor.lastrowid}."
         except sqlite3.IntegrityError:
             connection.rollback()
             message = f"Error: The list name '{list_name}' already exists."
+        #except ValueError as ve:
+        #    connection.rollback()
+        #    message = f"Validation error: {ve}"
         except sqlite3.Error as e:
             connection.rollback()
             message = f"Database error: {e}"
@@ -101,6 +109,9 @@ def add_item(item_name: str, list_name: str, db_name: str = "todopydb"):
         except sqlite3.IntegrityError:
             connection.rollback()
             message = f"Error: The list name '{list_name}' already exists."
+        #except ValueError as ve:
+        #    connection.rollback()
+        #    message = f"Validation error: {ve}"
         except sqlite3.Error as e:
             connection.rollback()
             message = f"Database error: {e}"
@@ -131,7 +142,7 @@ def show_db(db_name: str = "todopydb"):
 if __name__ == "__main__":
     db_name = "freshdb"
     initialize_database(db_name)
-    add_list("alice", db_name)
+    add_list("test", db_name)
     add_list("bob", db_name)
     add_list("eve", db_name)
     add_item("apple", "alice", db_name)
