@@ -3,63 +3,63 @@ import sqlite3
 
 def initialize_database(db_name: str):
     # Connect and create cursor
-    connection = sqlite3.connect(f"database/{db_name}.db")
-    cursor = connection.cursor()
+    with sqlite3.connect(f"database/{db_name}.db") as connection:
+        cursor = connection.cursor()
 
-    # Create Tables
-    try:
-        # Start transaction
-        connection.execute("BEGIN")
+        # Create Tables
+        try:
+            # Start transaction
+            connection.execute("BEGIN")
 
-        # Create
-        cursor.execute(
+            # Create
+            cursor.execute(
+                """
+                CREATE TABLE IF NOT EXISTS todolist (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    name TEXT
+                    )
             """
-            CREATE TABLE IF NOT EXISTS todolist (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT
-                )
-        """
-        )
+            )
 
-        cursor.execute(
+            cursor.execute(
+                """
+                CREATE TABLE IF NOT EXISTS item (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    name TEXT,
+                    done BOOLEAN,  -- Will be stored as INTEGER (0 or 1)
+                    todolistid INTEGER,
+                    FOREIGN KEY(todolistid) REFERENCES todolist(id))
             """
-            CREATE TABLE IF NOT EXISTS item (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT,
-                done BOOLEAN,  -- Will be stored as INTEGER (0 or 1)
-                todolistid INTEGER,
-                FOREIGN KEY(todolistid) REFERENCES todolist(id))
-        """
-        )
+            )
 
-        # Commit
-        connection.commit()
-    except Exception as e:
+            # Commit
+            connection.commit()
+        except Exception as e:
 
-        # Rollback if there was an Issue
-        connection.rollback()
-        #!
-        message = f"Transaction failed: {e}"
-        print("debug: Transaction failed:", e)
-    finally:
-        connection.close()
+            # Rollback if there was an Issue
+            connection.rollback()
+            #!
+            message = f"Transaction failed: {e}"
+            print("debug: Transaction failed:", e)
+        finally:
+            connection.close()
 
 
 def add_list(db_name: str, list_name: str):
-    connection = sqlite3.connect(f"database/{db_name}.db")
-    cursor = connection.cursor()
+    with sqlite3.connect(f"database/{db_name}.db") as connection:
+        cursor = connection.cursor()
 
-    try:
-        connection.execute("BEGIN")
-        cursor.execute(f"INSERT INTO todolist (name) VALUES (?)", (list_name))
-        connection.commit()
-        
-        print(f"List '{list_name}' added successfully with ID {cursor.lastrowid}.")
-    except Exception as e:
-        connection.rollback()
-        print("debug: Transaction failed:", e)
-    finally:
-        connection.close()
+        try:
+            connection.execute("BEGIN")
+            cursor.execute(f"INSERT INTO todolist (name) VALUES (?)", (list_name))
+            connection.commit()
+
+            print(f"List '{list_name}' added successfully with ID {cursor.lastrowid}.")
+        except Exception as e:
+            connection.rollback()
+            print("debug: Transaction failed:", e)
+        finally:
+            connection.close()
 
 
 def connect():
