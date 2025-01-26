@@ -1,7 +1,7 @@
 import sqlite3
 
 
-def initialize_database(db_name: str):
+def initialize_database(db_name: str = "todopydb"):
     # Connect and create cursor
     with sqlite3.connect(f"database/{db_name}.db") as connection:
         cursor = connection.cursor()
@@ -41,28 +41,24 @@ def initialize_database(db_name: str):
             #!
             message = f"Transaction failed: {e}"
             print("debug: Transaction failed:", e)
-        finally:
-            connection.close()
 
 
-def add_list(db_name: str, list_name: str):
+def add_list(list_name: str, db_name: str = "todopydb"):
     with sqlite3.connect(f"database/{db_name}.db") as connection:
         cursor = connection.cursor()
 
         try:
             connection.execute("BEGIN")
-            cursor.execute(f"INSERT INTO todolist (name) VALUES (?)", (list_name))
+            cursor.execute(f"INSERT INTO todolist (name) VALUES (?)", (list_name,)) #needs to be a tuple , hence trailing , to specify
             connection.commit()
 
             print(f"List '{list_name}' added successfully with ID {cursor.lastrowid}.")
         except Exception as e:
             connection.rollback()
             print("debug: Transaction failed:", e)
-        finally:
-            connection.close()
 
 
-def add_item(db_name: str, item_name: str, list_name: str):
+def add_item(item_name: str, list_name: str, db_name: str = "todopydb"):
     with sqlite3.connect(f"database/{db_name}.db") as connection:
         cursor = connection.cursor()
 
@@ -89,8 +85,6 @@ def add_item(db_name: str, item_name: str, list_name: str):
         except Exception as e:
             connection.rollback()
             print("debug: Transaction failed:", e)
-        finally:
-            connection.close()
 
 
 def connect():
@@ -136,14 +130,17 @@ def add_data(cursor):
     pass
 
 
-def show_db(cursor):
-    cursor.execute(
+def show_db(db_name: str = "todopydb"):
+    with sqlite3.connect(f"database/{db_name}.db") as connection:
+        cursor = connection.cursor()
+
+        cursor.execute(
+            """
+            SELECT *
+            FROM todolist
+            JOIN item ON todolist.id = item.todolistid
         """
-        SELECT *
-        FROM todolist
-        JOIN item ON todolist.id = item.todolistid
-    """
-    )
+        )
 
     rows = cursor.fetchall()
     for row in rows:
@@ -151,7 +148,13 @@ def show_db(cursor):
 
 
 if __name__ == "__main__":
-    cursor = create_tables()
-    show_db(cursor)
+    db_name = "freshdb"
+    initialize_database(db_name)
+    add_list("alice",db_name)
+    add_list("bob",db_name)
+    add_list("eve",db_name)
+    add_item("apple", "alice",db_name)
+    add_item("pineapple", "alice",db_name)
+    add_item("pen", "bob",db_name)
 
-    todopy
+    show_db(db_name)
