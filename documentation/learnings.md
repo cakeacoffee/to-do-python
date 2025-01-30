@@ -94,3 +94,31 @@ OperationalError
 * For database issues like bad SQL syntax or a broken connection
 
 [more info](https://www.w3schools.com/python/python_try_except.asp)
+
+## Database debugging
+used sqlite to help debug
+```bash
+sudo apt install sqlite3  # For Debian/Ubuntu-based systems
+```
+```bash
+sqlite3 database_name.db
+```
+```sql
+.tables
+```
+```sql
+.schema table_name
+```
+```sql
+-- Enable column formatting for readability
+.mode column
+.headers on
+
+-- Example: Select all rows from a table
+SELECT * FROM table_name;
+```
+```sql
+.output dump.sql  -- Redirect output to a file
+.dump             -- Export the database
+.quit             -- Exit SQLite CLI
+```
