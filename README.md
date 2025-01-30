@@ -72,12 +72,15 @@ The primary goal of this project is to strengthen my practical Python programmin
 ## TASKS
 - [X] Decide on tech stack,
 - [X] Setup project and environment
-- [ ] Design database and how everything links together t
+- [X] Design database and how everything links together t
 - [ ] Implement
-  * user interaction
-  * object structures
-  * database
-  * database interaction
+  - [!] user interaction
+  - [X] object structures
+  - [X] database
+  - [X] database interaction
 - [ ] Testing
 - [ ] UI
+
+NOTE:
+> Object structure has become redundant, connect from ui to sql queries directly
   
