@@ -100,22 +100,21 @@ def add_list(list_name: str, db_name: str = "todopydb") -> str:
             connection.commit()
 
             message = (
-                f"List '{list_name}' added successfully with ID {cursor.lastrowid}."
+                f"List '{list_name}' added successfully with ID {cursor.lastrowid}.\n"
             )
 
     except ValueError as ve:
-        message = f"Validation error: {ve}"
+        message = f"Validation error: {ve}\n"
     except sqlite3.IntegrityError:
         connection.rollback()
-        message = f"Error: The list name '{list_name}' already exists."
+        message = f"Error: The list name '{list_name}' already exists.\n"
     except sqlite3.Error as e:
         connection.rollback()
-        message = f"Database error: {e}"
+        message = f"Database error: {e}\n"
     except Exception as e:
         connection.rollback()
-        message = f"Unexpected error: {e}"
+        message = f"Unexpected error: {e}\n"
     finally:
-        print(message)
         return message
 
 
@@ -159,23 +158,84 @@ def add_item(item_name: str, list_name: str, db_name: str = "todopydb") -> str:
             connection.commit()
 
             message = (
-                f"Item '{item_name}' added to the to-do list '{list_name}'."
+                f"Item '{item_name}' added to the to-do list '{list_name}'.\n"
             )
     except ValueError as ve:
-        message = f"Validation error: {ve}"
+        message = f"Validation error: {ve}\n"
     except sqlite3.IntegrityError:
         connection.rollback()
-        message = f"Error: The list name '{list_name}' already exists."
+        message = f"Error: The list name '{list_name}' already exists.\n"
     except sqlite3.Error as e:
         connection.rollback()
-        message = f"Database error: {e}"
+        message = f"Database error: {e}\n"
     except Exception as e:
         connection.rollback()
-        message = f"Unexpected error: {e}"
+        message = f"Unexpected error: {e}\n"
     finally:
-        print(message)
         return message
 
+def toggle_done_item(item_name: str, list_name: str, db_name: str = "todopydb") -> str:
+    message = ""
+    try:
+        with sqlite3.connect(f"database/{db_name}.db") as connection:
+            cursor = connection.cursor()
+
+            connection.execute("BEGIN")
+            
+            #1. Get id of todolist
+            cursor.execute(
+                """
+                    SELECT id FROM todolist 
+                    WHERE name = ?
+                """, (list_name,))
+            
+            #1.1 Error - not found
+            result = cursor.fetchone()
+            if not result:
+                raise ValueError(f"list:'{list_name}' not found.\n")
+            todolist_id = result[0]
+            
+            #2. Get id of item
+            cursor.execute(
+                """
+                    SELECT id FROM item 
+                    WHERE name = ? 
+                    AND todolistid = ?
+                """, (item_name, todolist_id[0]))
+            
+            #2.1 Error - not found
+            result = cursor.fetchone()
+            if not result:
+                raise ValueError(f"item:'{item_name}' not found.\n")
+            item_id = result[0]
+            
+            #3 Update
+            cursor.execute(
+                """
+                    UPDATE item
+                    SET done = 1
+                    WHERE id = ?
+                """, (item_id[0],))
+            connection.commit()
+
+            message = (
+                f"Item '{item_name}' has been updated.\n"
+            )
+            
+    except ValueError as ve:
+        message = f"Validation error: {ve}\n"
+    except sqlite3.IntegrityError:
+        connection.rollback()
+        message = f"Error: The list name '{list_name}' already exists.\n"
+    except sqlite3.Error as e:
+        connection.rollback()
+        message = f"Database error: {e}\n"
+    except Exception as e:
+        connection.rollback()
+        message = f"Unexpected error: {e}\n"
+    finally:
+        return message
+    
 
 def show_db(db_name: str = "todopydb"):
     #!debug

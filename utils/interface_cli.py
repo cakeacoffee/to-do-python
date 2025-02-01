@@ -2,7 +2,6 @@
 """
 
 import click
-from utils.to_do_list import ToDoList
 from utils.db_setup import *
 
 
@@ -46,11 +45,12 @@ def add_item_to_list(to_do_list, items):
     click.echo(message)
 
 
-# TODO: add functionality
 @click.command
+@click.argument("to_do_list")
 @click.argument("item")
-def item_done(item):
-    click.echo(f"item {item} a complete")
+def item_done(to_do_list, item):
+    message = toggle_done_item(item, to_do_list)
+    click.echo(message)
 
 
 cli.add_command(create_new_list)
