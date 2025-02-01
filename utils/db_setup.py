@@ -158,7 +158,9 @@ def add_item(item_name: str, list_name: str, db_name: str = "todopydb") -> str:
             # add link to todolist table
             connection.commit()
 
-            message = f"Item '{item_name}' added to the to-do list '{list_name}'."
+            message = (
+                f"Item '{item_name}' added to the to-do list '{list_name}'."
+            )
     except ValueError as ve:
         message = f"Validation error: {ve}"
     except sqlite3.IntegrityError:
@@ -180,12 +182,25 @@ def show_db(db_name: str = "todopydb"):
     with sqlite3.connect(f"database/{db_name}.db") as connection:
         cursor = connection.cursor()
 
-        cursor.execute(
-            """
+        #cursor.execute(
+        """
             SELECT *
             FROM todolist
             JOIN item ON todolist.id = item.todolistid
         """
+        #)
+        
+        #cursor.execute(
+        """
+            SELECT *
+            FROM todolist
+        """
+        #)
+        cursor.execute(
+            """
+            SELECT *
+            FROM item
+            """
         )
 
     rows = cursor.fetchall()
@@ -194,7 +209,8 @@ def show_db(db_name: str = "todopydb"):
 
 
 if __name__ == "__main__":
-    db_name = "freshdb"
+    db_name = "todopydb"
+    """
     initialize_database(db_name)
     add_list("steven", db_name)
     add_list("bob", db_name)
@@ -202,5 +218,5 @@ if __name__ == "__main__":
     add_item("apple", "alice", db_name)
     add_item("pineapple", "alice", db_name)
     add_item("pen", "bob", db_name)
-
+    """
     show_db(db_name)
