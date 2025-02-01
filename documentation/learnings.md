@@ -96,6 +96,7 @@ OperationalError
 [more info](https://www.w3schools.com/python/python_try_except.asp)
 
 ## Database debugging
+I encountered an issue where the items were not adding to the db. 
 used sqlite to help debug
 ```bash
 sudo apt install sqlite3  # For Debian/Ubuntu-based systems
@@ -113,7 +114,7 @@ sqlite3 database_name.db
 -- Enable column formatting for readability
 .mode column
 .headers on
-
+s
 -- Example: Select all rows from a table
 SELECT * FROM table_name;
 ```
@@ -122,3 +123,5 @@ SELECT * FROM table_name;
 .dump             -- Export the database
 .quit             -- Exit SQLite CLI
 ```
+## Reduce complexity
+By cutting out the step where the CLI creates a ToDoList object, the process is simplified and made it easier to follow! Before, the app had to build an object just to pass data to the database, for a simple project like this, this is unnecessary complexity adds extra work and potential errors. Now, the CLI takes user input, checks it, and sends it straight to the database. This means fewer parts to maintain.
