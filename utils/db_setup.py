@@ -157,9 +157,7 @@ def add_item(item_name: str, list_name: str, db_name: str = "todopydb") -> str:
             # add link to todolist table
             connection.commit()
 
-            message = (
-                f"Item '{item_name}' added to the to-do list '{list_name}'.\n"
-            )
+            message = f"Item '{item_name}' added to the to-do list '{list_name}'.\n"
     except ValueError as ve:
         message = f"Validation error: {ve}\n"
     except sqlite3.IntegrityError:
@@ -173,6 +171,7 @@ def add_item(item_name: str, list_name: str, db_name: str = "todopydb") -> str:
         message = f"Unexpected error: {e}\n"
     finally:
         return message
+
 
 def toggle_done_item(item_name: str, list_name: str, db_name: str = "todopydb") -> str:
     message = ""
@@ -181,47 +180,51 @@ def toggle_done_item(item_name: str, list_name: str, db_name: str = "todopydb") 
             cursor = connection.cursor()
 
             connection.execute("BEGIN")
-            
-            #1. Get id of todolist
+
+            # 1. Get id of todolist
             cursor.execute(
                 """
                     SELECT id FROM todolist 
                     WHERE name = ?
-                """, (list_name,))
-            
-            #1.1 Error - not found
+                """,
+                (list_name,),
+            )
+
+            # 1.1 Error - not found
             result = cursor.fetchone()
             if not result:
                 raise ValueError(f"list:'{list_name}' not found.\n")
             todolist_id = result[0]
-            
-            #2. Get id of item
+
+            # 2. Get id of item
             cursor.execute(
                 """
                     SELECT id FROM item 
                     WHERE name = ? 
                     AND todolistid = ?
-                """, (item_name, todolist_id[0]))
-            
-            #2.1 Error - not found
+                """,
+                (item_name, todolist_id[0]),
+            )
+
+            # 2.1 Error - not found
             result = cursor.fetchone()
             if not result:
                 raise ValueError(f"item:'{item_name}' not found.\n")
             item_id = result[0]
-            
-            #3 Update
+
+            # 3 Update
             cursor.execute(
                 """
                     UPDATE item
                     SET done = 1
                     WHERE id = ?
-                """, (item_id[0],))
+                """,
+                (item_id[0],),
+            )
             connection.commit()
 
-            message = (
-                f"Item '{item_name}' has been updated.\n"
-            )
-            
+            message = f"Item '{item_name}' has been updated.\n"
+
     except ValueError as ve:
         message = f"Validation error: {ve}\n"
     except sqlite3.IntegrityError:
@@ -235,27 +238,27 @@ def toggle_done_item(item_name: str, list_name: str, db_name: str = "todopydb") 
         message = f"Unexpected error: {e}\n"
     finally:
         return message
-    
+
 
 def show_db(db_name: str = "todopydb"):
     #!debug
     with sqlite3.connect(f"database/{db_name}.db") as connection:
         cursor = connection.cursor()
 
-        #cursor.execute(
+        # cursor.execute(
         """
             SELECT *
             FROM todolist
             JOIN item ON todolist.id = item.todolistid
         """
-        #)
-        
-        #cursor.execute(
+        # )
+
+        # cursor.execute(
         """
             SELECT *
             FROM todolist
         """
-        #)
+        # )
         cursor.execute(
             """
             SELECT *

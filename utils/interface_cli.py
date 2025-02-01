@@ -30,9 +30,8 @@ def create_new_list(name: str, item: str) -> None:
     message = initialize_database()
     message += add_list(name)
     for i in item:
-        message += add_item(i,name)
+        message += add_item(i, name)
     click.echo(message)
-
 
 
 @click.command()
